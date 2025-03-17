@@ -3,12 +3,16 @@ import { View, Image, TextInput, InputModeOptions } from "react-native";
 
 interface ISearchBarProps {
   placeholder: string;
+  value?: string;
+  onChangeText?: (text: string) => void;
   inputMode?: InputModeOptions;
   onPress?: () => void;
 }
 
 export default function SearchBar({
   placeholder,
+  value,
+  onChangeText,
   inputMode,
   onPress,
 }: ISearchBarProps) {
@@ -25,8 +29,8 @@ export default function SearchBar({
       <TextInput
         onPress={onPress}
         placeholder={placeholder}
-        value=""
-        onChangeText={() => {}}
+        value={value}
+        onChangeText={onChangeText}
         className="flex-1 ml-2 text-white"
         placeholderTextColor="#a8b5db"
         inputMode={defaultInputMode}

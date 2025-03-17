@@ -3,8 +3,8 @@ import MovieCard from "./MovieCard";
 
 interface IMovieListProps {
   movies: Movie[];
-  listHeaderComponent?: React.ReactElement;
-  listEmptyComponent?: React.ReactElement;
+  listHeaderComponent?: React.JSX.Element;
+  listEmptyComponent?: React.JSX.Element;
 }
 
 export default function MovieList({
@@ -21,8 +21,8 @@ export default function MovieList({
       columnWrapperStyle={styles.columnWrapperStyle}
       className="mt-2 pb-32"
       scrollEnabled={false}
-      ListHeaderComponent={listHeaderComponent ?? null}
-      ListEmptyComponent={listEmptyComponent ?? null}
+      ListHeaderComponent={listHeaderComponent}
+      ListEmptyComponent={listEmptyComponent}
     />
   );
 }
