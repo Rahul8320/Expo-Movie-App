@@ -1,7 +1,7 @@
+import Background from "@/components/Background";
 import MovieCard from "@/components/MovieCard";
 import SearchBar from "@/components/SearchBar";
 import { icons } from "@/constants/icons";
-import { images } from "@/constants/images";
 import { fetchMovies } from "@/services/api";
 import { useFetch } from "@/services/useFetch";
 import { useRouter } from "expo-router";
@@ -24,9 +24,7 @@ export default function Index() {
   } = useFetch<Movie[]>(() => fetchMovies({ query: "" }), true);
 
   return (
-    <View className="flex-1 bg-primary">
-      <Image source={images.bg} className="absolute w-full z-0" />
-
+    <Background>
       <ScrollView
         className="flex-1 px-5"
         showsVerticalScrollIndicator={false}
@@ -41,7 +39,7 @@ export default function Index() {
             className="mt-10 self-center"
           />
         ) : moviesError ? (
-          <Text className="text-white text-center mt-10">
+          <Text className="text-red-500 text-center mt-10 mb-5">
             {moviesError?.message}
           </Text>
         ) : (
@@ -75,6 +73,6 @@ export default function Index() {
           </View>
         )}
       </ScrollView>
-    </View>
+    </Background>
   );
 }
