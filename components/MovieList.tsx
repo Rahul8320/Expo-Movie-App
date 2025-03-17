@@ -1,14 +1,16 @@
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, StyleProp, StyleSheet, ViewStyle } from "react-native";
 import MovieCard from "./MovieCard";
 
 interface IMovieListProps {
   movies: Movie[];
+  contentContainerStyle?: StyleProp<ViewStyle>;
   listHeaderComponent?: React.JSX.Element;
   listEmptyComponent?: React.JSX.Element;
 }
 
 export default function MovieList({
   movies,
+  contentContainerStyle,
   listHeaderComponent,
   listEmptyComponent,
 }: IMovieListProps) {
@@ -19,6 +21,7 @@ export default function MovieList({
       keyExtractor={(item) => item.id.toString()}
       numColumns={3}
       columnWrapperStyle={styles.columnWrapperStyle}
+      contentContainerStyle={contentContainerStyle}
       className="mt-2 pb-32"
       scrollEnabled={false}
       ListHeaderComponent={listHeaderComponent}

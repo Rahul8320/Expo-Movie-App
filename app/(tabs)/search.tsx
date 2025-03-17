@@ -4,7 +4,7 @@ import SearchBar from "@/components/SearchBar";
 import { icons } from "@/constants/icons";
 import { fetchMovies } from "@/services/api";
 import { useFetch } from "@/services/useFetch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text, Image, View, ActivityIndicator } from "react-native";
 
 interface ISearchHeaderProps {
@@ -24,11 +24,11 @@ const SearchHeader = ({
 }: ISearchHeaderProps) => {
   return (
     <>
-      <View className="px-5">
-        <Image source={icons.logo} className="w-12 h-10 mt-5 mb-10 mx-auto" />
+      <View>
+        <Image source={icons.logo} className="w-12 h-10 mt-10 mb-10 mx-auto" />
 
         <SearchBar
-          placeholder="Search a movie ..."
+          placeholder="Search for a movie"
           value={searchQuery}
           onChangeText={(text: string) => setSearchQuery(text)}
           inputMode="search"
@@ -39,16 +39,14 @@ const SearchHeader = ({
         <ActivityIndicator size="large" color="#0000ff" className="my-3" />
       )}
 
-      {error && (
-        <Text className="text-red-500 px-5 my-3">{error?.message}</Text>
-      )}
+      {error && <Text className="text-red-500 my-3">{error?.message}</Text>}
 
       {!loading &&
         !error &&
         searchQuery.trim() &&
         movies &&
         movies.length > 0 && (
-          <Text className="text-xl text-white font-bold">
+          <Text className="text-xl text-white font-bold mb-5">
             Search Results for{" "}
             <Text className="text-accent">{searchQuery.trim()}</Text>
           </Text>
@@ -60,14 +58,20 @@ const SearchHeader = ({
 const EmptyList = ({
   loading,
   error,
+  searchQuery,
 }: {
   loading: boolean;
   error: Error | null;
+  searchQuery: string;
 }) => {
   return (
     <>
       {!loading && !error && (
-        <Text className="text-gray-500 text-center mt-10">No movie found</Text>
+        <View className="mt-10">
+          <Text className="text-gray-500 text-center">
+            {searchQuery.trim() ? "No results found" : "Search for a movie"}
+          </Text>
+        </View>
       )}
     </>
   );
@@ -78,27 +82,50 @@ export default function Search() {
 
   const {
     data: movies,
+    refetch: loadMovies,
+    reset: resetMovies,
     loading,
     error,
   } = useFetch<Movie[]>(() => fetchMovies({ query: searchQuery }), false);
 
+  useEffect(() => {
+    const timeOutId = setTimeout(async () => {
+      if (searchQuery.trim()) {
+        await loadMovies();
+      } else {
+        resetMovies();
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(timeOutId);
+    };
+  }, [searchQuery]);
+
   return (
     <Background>
-      <Text>Search</Text>
-
-      <MovieList
-        movies={movies ?? []}
-        listHeaderComponent={
-          <SearchHeader
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            loading={loading}
-            error={error}
-            movies={movies}
-          />
-        }
-        listEmptyComponent={<EmptyList error={error} loading={loading} />}
-      />
+      <View className="px-5">
+        <MovieList
+          movies={movies ?? []}
+          contentContainerStyle={{ paddingBottom: 100 }}
+          listHeaderComponent={
+            <SearchHeader
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              loading={loading}
+              error={error}
+              movies={movies}
+            />
+          }
+          listEmptyComponent={
+            <EmptyList
+              error={error}
+              loading={loading}
+              searchQuery={searchQuery}
+            />
+          }
+        />
+      </View>
     </Background>
   );
 }
