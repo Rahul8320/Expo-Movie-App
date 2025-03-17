@@ -1,18 +1,11 @@
 import Background from "@/components/Background";
-import MovieCard from "@/components/MovieCard";
+import MovieList from "@/components/MovieList";
 import SearchBar from "@/components/SearchBar";
 import { icons } from "@/constants/icons";
 import { fetchMovies } from "@/services/api";
 import { useFetch } from "@/services/useFetch";
 import { useRouter } from "expo-router";
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  ActivityIndicator,
-  FlatList,
-} from "react-native";
+import { View, Text, Image, ScrollView, ActivityIndicator } from "react-native";
 
 export default function Index() {
   const router = useRouter();
@@ -39,7 +32,7 @@ export default function Index() {
             className="mt-10 self-center"
           />
         ) : moviesError ? (
-          <Text className="text-red-500 text-center mt-10 mb-5">
+          <Text className="text-red-500 text-center mt-10">
             {moviesError?.message}
           </Text>
         ) : (
@@ -55,20 +48,7 @@ export default function Index() {
                 Latest Movies
               </Text>
 
-              <FlatList
-                data={movies}
-                renderItem={({ item }) => <MovieCard {...item} />}
-                keyExtractor={(item) => item.id.toString()}
-                numColumns={3}
-                columnWrapperStyle={{
-                  justifyContent: "flex-start",
-                  gap: 20,
-                  paddingRight: 5,
-                  marginBottom: 10,
-                }}
-                className="mt-2 pb-32"
-                scrollEnabled={false}
-              />
+              {movies && <MovieList movies={movies} />}
             </>
           </View>
         )}
