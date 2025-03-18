@@ -3,6 +3,7 @@ import MovieList from "@/components/MovieList";
 import SearchBar from "@/components/SearchBar";
 import { icons } from "@/constants/icons";
 import { fetchMovies } from "@/services/api";
+import appwriteService from "@/services/appwrite.service";
 import { useFetch } from "@/services/useFetch";
 import { useEffect, useState } from "react";
 import { Text, Image, View, ActivityIndicator } from "react-native";
@@ -101,6 +102,18 @@ export default function Search() {
       clearTimeout(timeOutId);
     };
   }, [searchQuery]);
+
+  useEffect(() => {
+    const func = async () => {
+      if (!movies || movies.length == 0) {
+        return;
+      }
+
+      await appwriteService.updateSearchCount(searchQuery, movies[0]);
+    };
+
+    func();
+  }, [movies]);
 
   return (
     <Background>

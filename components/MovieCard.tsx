@@ -39,7 +39,7 @@ export default function MovieCard({
 
           <View>
             <Text className="text-xs font-bold text-white">
-              👍 {Math.round(popularity)} %
+              👍 {Math.round(popularity % 100)} %
             </Text>
           </View>
         </View>
