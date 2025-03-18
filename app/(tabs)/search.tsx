@@ -8,13 +8,13 @@ import { useFetch } from "@/services/useFetch";
 import { useEffect, useState } from "react";
 import { Text, Image, View, ActivityIndicator } from "react-native";
 
-interface ISearchHeaderProps {
+type ISearchHeaderProps = {
   searchQuery: string;
   setSearchQuery: (text: string) => void;
   loading: boolean;
   error: Error | null;
   movies: Movie[] | null;
-}
+};
 
 const SearchHeader = ({
   searchQuery,

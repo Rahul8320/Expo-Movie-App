@@ -1,13 +1,13 @@
 import { icons } from "@/constants/icons";
 import { View, Image, TextInput, InputModeOptions } from "react-native";
 
-interface ISearchBarProps {
+type ISearchBarProps = {
   placeholder: string;
   value?: string;
   onChangeText?: (text: string) => void;
   inputMode?: InputModeOptions;
   onPress?: () => void;
-}
+};
 
 export default function SearchBar({
   placeholder,

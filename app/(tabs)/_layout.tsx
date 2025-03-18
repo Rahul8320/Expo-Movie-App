@@ -3,11 +3,11 @@ import { images } from "@/constants/images";
 import { Tabs } from "expo-router";
 import { ImageBackground, Image, Text, View } from "react-native";
 
-interface ITabIconProps {
+type ITabIconProps = {
   focused: boolean;
   icon: any;
   title: string;
-}
+};
 
 const TabIcon = ({ focused, icon, title }: ITabIconProps) => {
   if (focused === false) {

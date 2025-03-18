@@ -1,12 +1,12 @@
 import { FlatList, StyleProp, StyleSheet, ViewStyle } from "react-native";
 import MovieCard from "./MovieCard";
 
-interface IMovieListProps {
+type IMovieListProps = {
   movies: Movie[];
   contentContainerStyle?: StyleProp<ViewStyle>;
   listHeaderComponent?: React.JSX.Element;
   listEmptyComponent?: React.JSX.Element;
-}
+};
 
 export default function MovieList({
   movies,
