@@ -58,6 +58,21 @@ class AppwriteService {
     }
   };
 
+  public getTrendingMovies = async (): Promise<TrendingMovie[]> => {
+    try {
+      const results = await this.database.listDocuments(
+        this.DATABASE_ID,
+        this.COLLECTION_ID,
+        [Query.limit(5), Query.orderDesc("count")]
+      );
+
+      return results.documents as unknown as TrendingMovie[];
+    } catch (err) {
+      console.error(err);
+      return [];
+    }
+  };
+
   private getDocumentsByQuery = async (query: string): Promise<IMetric[]> => {
     const results = await this.database.listDocuments(
       this.DATABASE_ID,
