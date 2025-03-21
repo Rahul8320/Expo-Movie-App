@@ -1,9 +1,10 @@
 import { icons } from "@/constants/icons";
 import { fetchMovieDetails } from "@/services/api";
 import { formatDate } from "@/services/dateFormatService";
+import { toFixedNumber } from "@/services/numberFormatService";
 import { useFetch } from "@/services/useFetch";
-import { useLocalSearchParams } from "expo-router";
-import { View, Text, ScrollView, Image } from "react-native";
+import { router, useLocalSearchParams } from "expo-router";
+import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 
 type MovieInfoProps = {
   label: string;
@@ -46,9 +47,11 @@ export default function MovieDetails() {
 
           <View className="flex-row items-center gap-x-4 mt-2">
             <Text className="text-sm text-light-200">
+              {/* TODO: add date and full month name */}
               {formatDate(movieDetails?.release_date ?? "")}
             </Text>
             <Text className="text-sm text-light-200">
+              {/* TODO: convert minutes to hours and minutes  */}
               {movieDetails?.runtime}m
             </Text>
           </View>
@@ -69,8 +72,46 @@ export default function MovieDetails() {
             label="Genres"
             value={movieDetails?.genres?.map((g) => g.name).join(" - ")}
           />
+
+          {/* TODO: update this to billon or million as per number */}
+          <View className="flex flex-row justify-between w-1/2">
+            <MovieInfo
+              label="Budget"
+              value={
+                movieDetails?.budget &&
+                `$${toFixedNumber(movieDetails?.budget / 1_000_000)} million`
+              }
+            />
+            <MovieInfo
+              label="Revenue"
+              value={
+                movieDetails?.revenue &&
+                `$${toFixedNumber(movieDetails?.revenue / 1_000_000)} million`
+              }
+            />
+          </View>
+
+          {/* TODO: add logo, country name in list  */}
+          <MovieInfo
+            label="Production Companies"
+            value={movieDetails?.production_companies
+              ?.map((c) => c.name)
+              .join(" - ")}
+          />
         </View>
       </ScrollView>
+
+      <TouchableOpacity
+        onPress={router.back}
+        className="absolute bottom-5 left-0 right-0 mx-5 bg-accent rounded-lg py-3.5 flex flex-row items-center justify-center z-50"
+      >
+        <Image
+          source={icons.arrow}
+          className="size-5 mr-1 mt-0.5 rotate-180"
+          tintColor="#fff"
+        />
+        <Text className="text-white font-semibold text-base">Go Back</Text>
+      </TouchableOpacity>
     </View>
   );
 }
