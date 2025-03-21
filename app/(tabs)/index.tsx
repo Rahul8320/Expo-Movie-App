@@ -58,6 +58,7 @@ export default function Index() {
               onPress={() => router.push("/search")}
             />
 
+            {/* TODO: Separate this into a component */}
             {trendingMovies && (
               <>
                 <Text className="text-lg text-white font-bold mt-5 mb-3">
